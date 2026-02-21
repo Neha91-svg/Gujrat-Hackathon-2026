@@ -15,25 +15,30 @@ import Layout from "./components/Layout";
 function App() {
   const auth = useContext(AuthContext);
 
-  const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-    if (!auth?.role) {
-      return <Navigate to="/" />;
-    }
+  const RoleProtectedRoute = ({
+    children,
+    allowedRoles,
+  }: {
+    children: JSX.Element;
+    allowedRoles: string[];
+  }) => {
+    if (!auth?.role) return <Navigate to="/" replace />;
+    if (!allowedRoles.includes(auth.role))
+      return <Navigate to="/dashboard" replace />;
     return children;
   };
 
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* LOGIN */}
         <Route path="/" element={<Login />} />
 
+        {/* PROTECTED ROUTES */}
         <Route
           path="/"
-          element={
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          }
+          element={auth?.role ? <Layout /> : <Navigate to="/" replace />}
         >
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="vehicles" element={<Vehicles />} />
@@ -43,6 +48,7 @@ function App() {
           <Route path="expenses" element={<Expenses />} />
           <Route path="analytics" element={<Analytics />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );
