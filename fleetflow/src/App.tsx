@@ -12,8 +12,6 @@ import Expenses from "./pages/Expenses";
 import Analytics from "./pages/Analytics";
 import Layout from "./components/Layout";
 
-import "./App.css";
-
 function App() {
   const auth = useContext(AuthContext);
 
@@ -27,10 +25,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Route */}
         <Route path="/" element={<Login />} />
 
-        {/* Protected Routes */}
         <Route
           path="/"
           element={

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Vehicle } from "../types/vehicle";
+import type { Vehicle } from "../types/Vehicle";
 
 const Vehicles = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);

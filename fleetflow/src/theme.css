@@ -1,0 +1,81 @@
+body {
+  background-color: #0b1220;
+  color: #e2e8f0;
+  font-family: "Inter", sans-serif;
+}
+
+.sidebar {
+  background-color: #0f172a;
+  height: 100vh;
+  padding: 20px;
+}
+
+.sidebar a {
+  color: #94a3b8;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.sidebar a:hover {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+.sidebar .active-link {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+.dashboard-card {
+  background-color: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 20px;
+  transition: 0.3s;
+}
+
+.dashboard-card:hover {
+  border-color: #38bdf8;
+  transform: translateY(-3px);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.top-header {
+  padding: 20px;
+  border-bottom: 1px solid #1f2937;
+}
+
+/* Animated Gradient Background */
+.login-bg {
+  height: 100vh;
+  background: linear-gradient(-45deg, #0f172a, #1e293b, #0b1220, #1e3a8a);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glass Card */
+.glass-card {
+  backdrop-filter: blur(15px);
+  background: rgba(17, 25, 40, 0.75);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  padding: 40px;
+  width: 400px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
