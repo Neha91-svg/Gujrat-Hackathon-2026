@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
+
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Vehicles from "./pages/Vehicles";
+import Drivers from "./pages/Drivers";
+import Trips from "./pages/Trips";
+import Maintenance from "./pages/Maintenance";
+import Expenses from "./pages/Expenses";
+import Analytics from "./pages/Analytics";
+import Layout from "./components/Layout";
+
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const auth = useContext(AuthContext);
+
+  const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+    if (!auth?.role) {
+      return <Navigate to="/" />;
+    }
+    return children;
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        {/* Public Route */}
+        <Route path="/" element={<Login />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="vehicles" element={<Vehicles />} />
+          <Route path="drivers" element={<Drivers />} />
+          <Route path="trips" element={<Trips />} />
+          <Route path="maintenance" element={<Maintenance />} />
+          <Route path="expenses" element={<Expenses />} />
+          <Route path="analytics" element={<Analytics />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
