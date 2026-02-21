@@ -11,7 +11,7 @@ const Layout = () => {
     navigate("/");
   };
 
-  const role = auth?.role;
+  const role = auth?.user?.role; // ✅ FIXED
 
   return (
     <div className="container-fluid">
@@ -20,12 +20,12 @@ const Layout = () => {
         {/* Sidebar */}
         <div className="col-2 bg-dark text-light vh-100 p-4">
           <h4 className="text-info mb-4">FleetFlow</h4>
+
           <p className="small text-secondary">
             Logged in as: <span className="text-info">{role}</span>
           </p>
 
           <nav className="nav flex-column">
-            
 
             <NavLink className="nav-link text-light" to="/dashboard">
               Dashboard

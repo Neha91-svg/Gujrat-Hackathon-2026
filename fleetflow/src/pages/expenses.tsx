@@ -3,7 +3,6 @@ import { FleetContext } from "../context/FleetContext";
 
 const Expenses = () => {
   const fleet = useContext(FleetContext);
-
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Fuel");
@@ -12,99 +11,52 @@ const Expenses = () => {
 
   const { expenses, addExpense, deleteExpense } = fleet;
 
-  const addNewExpense = () => {
+  const handleAddExpense = async () => {
     if (!title || !amount) return;
-
-    addExpense({
-      id: Date.now().toString(),
-      title,
-      amount: Number(amount),
-      category: category as any,
-      date: new Date().toLocaleDateString(),
-    });
-
-    setTitle("");
-    setAmount("");
+    await addExpense({ title, amount: Number(amount), category, date: new Date().toLocaleDateString() });
+    setTitle(""); setAmount(""); setCategory("Fuel");
   };
 
-  const totalExpense = expenses.reduce(
-    (sum, e) => sum + e.amount,
-    0
-  );
+  const totalExpense = expenses.reduce((sum, e) => sum + e.amount, 0);
 
   return (
-    <div>
+    <div className="container my-4">
+      <h3 className="mb-4 text-primary">Expense Management</h3>
 
-      <h3 className="mb-4">Expense Management</h3>
-
-      {/* ADD EXPENSE */}
-      <div className="dashboard-card mb-4">
-        <h5 className="mb-3">Add Expense</h5>
-
-        <div className="row g-3">
-          <div className="col-md-4">
-            <input
-              className="form-control"
-              placeholder="Expense Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-
-          <div className="col-md-3">
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-          </div>
-
-          <div className="col-md-3">
-            <select
-              className="form-select"
-              value={category}
-              onChange={(e) =>
-                setCategory(e.target.value)
-              }
-            >
-              <option>Fuel</option>
-              <option>Maintenance</option>
-              <option>Salary</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div className="col-md-2">
-            <button
-              className="btn btn-info w-100"
-              onClick={addNewExpense}
-            >
-              Add
-            </button>
-          </div>
-        </div>
+      {/* Add Expense */}
+      <div className="card p-3 mb-4 shadow-sm d-flex flex-wrap gap-2">
+        <input
+          className="form-control text-white bg-dark"
+          placeholder="Title"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+        />
+        <input
+          className="form-control text-white bg-dark"
+          type="number"
+          placeholder="Amount"
+          value={amount}
+          onChange={e => setAmount(e.target.value)}
+        />
+        <select className="form-select bg-dark text-white" value={category} onChange={e => setCategory(e.target.value)}>
+          <option>Fuel</option>
+          <option>Maintenance</option>
+          <option>Salary</option>
+          <option>Other</option>
+        </select>
+        <button className="btn btn-primary" onClick={handleAddExpense}>Add Expense</button>
       </div>
 
-      {/* TOTAL CARD */}
-      <div className="dashboard-card mb-4">
-        <h5>Total Expenses</h5>
-        <div className="stat-number text-danger">
-          ₹ {totalExpense.toLocaleString()}
-        </div>
+      {/* Total Expenses */}
+      <div className="card p-3 mb-4 shadow-sm">
+        <h5>Total Expenses: <span className="text-danger">₹ {totalExpense.toLocaleString()}</span></h5>
       </div>
 
-      {/* EXPENSE TABLE */}
-      <div className="dashboard-card">
-
-        {expenses.length === 0 ? (
-          <div className="text-muted">
-            No expenses recorded
-          </div>
-        ) : (
-          <table className="table table-dark table-hover align-middle">
-            <thead>
+      {/* Expenses Table */}
+      <div className="card p-3 shadow-sm table-responsive">
+        {expenses.length === 0 ? <p>No expenses recorded</p> : (
+          <table className="table table-hover table-striped align-middle">
+            <thead className="table-dark">
               <tr>
                 <th>Title</th>
                 <th>Category</th>
@@ -113,39 +65,22 @@ const Expenses = () => {
                 <th>Action</th>
               </tr>
             </thead>
-
             <tbody>
-              {expenses.map((e) => (
-                <tr key={e.id}>
+              {expenses.map(e => (
+                <tr key={e._id}>
                   <td>{e.title}</td>
-                  <td>
-                    <span className="badge bg-info">
-                      {e.category}
-                    </span>
-                  </td>
-                  <td className="text-danger">
-                    ₹ {e.amount}
-                  </td>
+                  <td>{e.category}</td>
+                  <td>₹ {e.amount}</td>
                   <td>{e.date}</td>
                   <td>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() =>
-                        deleteExpense(e.id)
-                      }
-                    >
-                      Delete
-                    </button>
+                    <button className="btn btn-danger btn-sm" onClick={() => deleteExpense(e._id)}>Delete</button>
                   </td>
                 </tr>
               ))}
             </tbody>
-
           </table>
         )}
-
       </div>
-
     </div>
   );
 };

@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 
-const vehicleSchema = new mongoose.Schema({
-  model: { type: String, required: true },
-  licensePlate: { type: String, unique: true, required: true },
-  capacityKg: Number,
-  odometer: Number,
-  status: { type: String, default: "Available" },
-  acquisitionCost: Number
-}, { timestamps: true });
+const schema = new mongoose.Schema({
+  name: String,
+  model: String,
+  licensePlate: { type: String, unique: true },
+  capacity: Number,
+  status: { type: String, default: "Available" } // Available | On Trip | In Shop
+});
 
-export default mongoose.model("Vehicle", vehicleSchema);
+export default mongoose.model("Vehicle", schema);

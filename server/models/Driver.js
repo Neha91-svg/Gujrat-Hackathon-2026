@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 
-const driverSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   name: String,
-  licenseExpiry: Date,
-  status: { type: String, default: "On Duty" },
-  safetyScore: Number
-}, { timestamps: true });
+  licenseNumber: String,
+  status: { type: String, default: "Active" } // Active | Suspended | Off Duty
+});
 
-export default mongoose.model("Driver", driverSchema);
+export default mongoose.model("Driver", schema);

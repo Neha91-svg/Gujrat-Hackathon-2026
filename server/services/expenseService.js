@@ -1,4 +1,4 @@
-import FuelLog from "../models/FuelLog.js";
+import Expense from "../models/Expense.js";
 
-export const addFuel = (data) => FuelLog.create(data);
-export const getFuelLogs = () => FuelLog.find();
+export const addFuel = (data) => Expense.create(data);
+export const getFuelLogs = () => Expense.find({ type: "Fuel" });

@@ -9,71 +9,37 @@ const Maintenance = () => {
 
   const { vehicles, updateVehicleStatus } = fleet;
 
-  const availableVehicles = vehicles.filter(
-    (v) => v.status === "Available"
-  );
+  const availableVehicles = vehicles.filter(v => v.status === "Available");
+  const maintenanceVehicles = vehicles.filter(v => v.status === "In Shop");
 
-  const maintenanceVehicles = vehicles.filter(
-    (v) => v.status === "In Shop"
-  );
-
-  const sendToMaintenance = () => {
+  const sendToMaintenance = async () => {
     if (!selectedId) return;
-    updateVehicleStatus(selectedId, "In Shop");
+    await updateVehicleStatus(selectedId, "In Shop");
     setSelectedId("");
   };
 
-  const completeMaintenance = (id: string) => {
-    updateVehicleStatus(id, "Available");
+  const completeMaintenance = async (id: string) => {
+    await updateVehicleStatus(id, "Available");
   };
 
   return (
-    <div>
+    <div className="container my-4">
+      <h3 className="mb-4 text-primary">Maintenance Center</h3>
 
-      <h3 className="mb-4">Maintenance Center</h3>
-
-      {/* ADD TO MAINTENANCE */}
-      <div className="dashboard-card mb-4">
-        <h5 className="mb-3">Send Vehicle to Maintenance</h5>
-
-        <div className="row g-3">
-          <div className="col-md-8">
-            <select
-              className="form-select"
-              value={selectedId}
-              onChange={(e) => setSelectedId(e.target.value)}
-            >
-              <option value="">Select Vehicle</option>
-              {availableVehicles.map((v) => (
-                <option key={v.id} value={v.id}>
-                  {v.name} ({v.capacity}kg)
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="col-md-4">
-            <button
-              className="btn btn-warning w-100"
-              onClick={sendToMaintenance}
-            >
-              Move to Maintenance
-            </button>
-          </div>
-        </div>
+      {/* Send to Maintenance */}
+      <div className="card p-3 mb-4 shadow-sm d-flex flex-wrap gap-2">
+        <select className="form-select flex-grow-1" value={selectedId} onChange={e => setSelectedId(e.target.value)}>
+          <option value="">Select Vehicle</option>
+          {availableVehicles.map(v => <option key={v._id} value={v._id}>{v.name} ({v.capacity} kg)</option>)}
+        </select>
+        <button className="btn btn-warning" onClick={sendToMaintenance} disabled={!selectedId}>Move to Maintenance</button>
       </div>
 
-      {/* MAINTENANCE LIST */}
-      <div className="dashboard-card">
-        <h5 className="mb-3">Vehicles in Maintenance</h5>
-
-        {maintenanceVehicles.length === 0 ? (
-          <div className="text-muted">
-            No vehicles currently in maintenance
-          </div>
-        ) : (
-          <table className="table table-dark table-hover align-middle">
-            <thead>
+      {/* Vehicles in Maintenance */}
+      <div className="card p-3 shadow-sm table-responsive">
+        {maintenanceVehicles.length === 0 ? <p>No vehicles currently in maintenance</p> : (
+          <table className="table table-hover align-middle">
+            <thead className="table-dark">
               <tr>
                 <th>Name</th>
                 <th>Capacity</th>
@@ -81,34 +47,21 @@ const Maintenance = () => {
                 <th>Action</th>
               </tr>
             </thead>
-
             <tbody>
-              {maintenanceVehicles.map((v) => (
-                <tr key={v.id}>
+              {maintenanceVehicles.map(v => (
+                <tr key={v._id}>
                   <td>{v.name}</td>
                   <td>{v.capacity} kg</td>
+                  <td><span className="badge bg-warning">In Shop</span></td>
                   <td>
-                    <span className="badge bg-warning text-dark">
-                      In Shop
-                    </span>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-success btn-sm"
-                      onClick={() => completeMaintenance(v.id)}
-                    >
-                      Mark Completed
-                    </button>
+                    <button className="btn btn-sm btn-success" onClick={() => completeMaintenance(v._id)}>Mark Completed</button>
                   </td>
                 </tr>
               ))}
             </tbody>
-
           </table>
         )}
-
       </div>
-
     </div>
   );
 };
