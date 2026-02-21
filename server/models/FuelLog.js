@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const fuelSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   vehicleId: { type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" },
   liters: Number,
   cost: Number,
-  date: Date
+  date: { type: Date, default: Date.now }
 });
 
-export default mongoose.model("FuelLog", fuelSchema);
+export default mongoose.model("FuelLog", schema);

@@ -8,12 +8,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", routes);
-
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK" });
 });
 
+/* ALL ROUTES */
+app.use("/api", routes);
+
+/* ERROR HANDLER — always last */
 app.use(errorMiddleware);
 
 export default app;

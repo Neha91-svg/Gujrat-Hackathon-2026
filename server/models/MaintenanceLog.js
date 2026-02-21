@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const maintenanceSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   vehicleId: { type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" },
   description: String,
   cost: Number,
-  date: Date
+  date: { type: Date, default: Date.now }
 });
 
-export default mongoose.model("MaintenanceLog", maintenanceSchema);
+export default mongoose.model("MaintenanceLog", schema);
